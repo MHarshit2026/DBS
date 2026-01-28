@@ -375,6 +375,7 @@
   padding: 40px 30px;
   position: relative;
   transition: border-color 0.3s ease, transform 0.3s ease;
+  color: #FFFFFF !important;
 }
 
 .pricing-card:hover {
@@ -384,6 +385,10 @@
 
 .pricing-card.popular {
   border: 2px solid #FFFFFF;
+}
+
+.pricing-card * {
+  color: #FFFFFF !important;
 }
 
 .popular-badge {
