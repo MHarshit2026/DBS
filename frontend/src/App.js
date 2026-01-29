@@ -6,12 +6,12 @@ import { Input } from "./components/ui/input";
 import { Textarea } from "./components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select";
 import { Toaster, toast } from "sonner";
-import { 
-  Phone, 
-  Calendar, 
-  MessageSquare, 
-  Clock, 
-  Globe, 
+import {
+  Phone,
+  Calendar,
+  MessageSquare,
+  Clock,
+  Globe,
   PhoneCall,
   Scissors,
   Stethoscope,
@@ -37,8 +37,8 @@ import {
   TrendingUp,
   Shield,
   Rocket,
-  Languages
-} from "lucide-react";
+  Languages } from
+"lucide-react";
 
 function App() {
   const [formData, setFormData] = useState({
@@ -70,137 +70,137 @@ function App() {
   };
 
   const services = [
-    {
-      title: "AI Voice Agents (Inbound)",
-      description: "Answer every incoming call instantly with AI-powered voice agents that sound human.",
-      icon: PhoneCall
-    },
-    {
-      title: "AI Voice Agents (Outbound)",
-      description: "Automate follow-ups, confirmations, and outreach campaigns with intelligent voice agents.",
-      icon: Phone
-    },
-    {
-      title: "Missed Call Recovery",
-      description: "Never lose a lead again. Automatically call back missed calls within seconds.",
-      icon: Clock
-    },
-    {
-      title: "WhatsApp & SMS Follow-Up",
-      description: "Engage customers on their preferred channels with automated messaging.",
-      icon: MessageSquare
-    },
-    {
-      title: "AI Chatbots",
-      description: "Deploy intelligent chatbots on your website to capture and qualify leads 24/7.",
-      icon: Users
-    },
-    {
-      title: "AI-Powered Websites",
-      description: "Get a conversion-optimized website built with AI technology and smart integrations.",
-      icon: Globe
-    },
-    {
-      title: "CRM & Calendar Integration",
-      description: "Seamlessly sync with your existing tools. Appointments booked directly to your calendar.",
-      icon: Calendar
-    }
-  ];
+  {
+    title: "AI Voice Agents (Inbound)",
+    description: "Answer every incoming call instantly with AI-powered voice agents that sound human.",
+    icon: PhoneCall
+  },
+  {
+    title: "AI Voice Agents (Outbound)",
+    description: "Automate follow-ups, confirmations, and outreach campaigns with intelligent voice agents.",
+    icon: Phone
+  },
+  {
+    title: "Missed Call Recovery",
+    description: "Never lose a lead again. Automatically call back missed calls within seconds.",
+    icon: Clock
+  },
+  {
+    title: "WhatsApp & SMS Follow-Up",
+    description: "Engage customers on their preferred channels with automated messaging.",
+    icon: MessageSquare
+  },
+  {
+    title: "AI Chatbots",
+    description: "Deploy intelligent chatbots on your website to capture and qualify leads 24/7.",
+    icon: Users
+  },
+  {
+    title: "AI-Powered Websites",
+    description: "Get a conversion-optimized website built with AI technology and smart integrations.",
+    icon: Globe
+  },
+  {
+    title: "CRM & Calendar Integration",
+    description: "Seamlessly sync with your existing tools. Appointments booked directly to your calendar.",
+    icon: Calendar
+  }];
+
 
   const industries = [
-    { name: "Salons & Spas", icon: Scissors },
-    { name: "Clinics", icon: Stethoscope },
-    { name: "Real Estate", icon: HomeIcon },
-    { name: "Dental", icon: HeartPulse },
-    { name: "Gyms & Fitness", icon: Dumbbell },
-    { name: "Coaching", icon: GraduationCap },
-    { name: "Home Services", icon: Wrench },
-    { name: "Auto Repair", icon: Car },
-    { name: "Restaurants", icon: UtensilsCrossed },
-    { name: "Law Firms", icon: Scale },
-    { name: "Consulting", icon: Briefcase },
-    { name: "Hotels", icon: Hotel },
-    { name: "E-commerce", icon: ShoppingCart },
-    { name: "Logistics", icon: Truck },
-    { name: "Financial Services", icon: DollarSign },
-    { name: "Pet Services", icon: PawPrint },
-    { name: "Photography", icon: Camera },
-    { name: "Education", icon: BookOpen }
-  ];
+  { name: "Salons & Spas", icon: Scissors },
+  { name: "Clinics", icon: Stethoscope },
+  { name: "Real Estate", icon: HomeIcon },
+  { name: "Dental", icon: HeartPulse },
+  { name: "Gyms & Fitness", icon: Dumbbell },
+  { name: "Coaching", icon: GraduationCap },
+  { name: "Home Services", icon: Wrench },
+  { name: "Auto Repair", icon: Car },
+  { name: "Restaurants", icon: UtensilsCrossed },
+  { name: "Law Firms", icon: Scale },
+  { name: "Consulting", icon: Briefcase },
+  { name: "Hotels", icon: Hotel },
+  { name: "E-commerce", icon: ShoppingCart },
+  { name: "Logistics", icon: Truck },
+  { name: "Financial Services", icon: DollarSign },
+  { name: "Pet Services", icon: PawPrint },
+  { name: "Photography", icon: Camera },
+  { name: "Education", icon: BookOpen }];
+
 
   const howItWorks = [
-    {
-      step: "01",
-      title: "Tell us about your business",
-      description: "Share your industry, goals, and how you want your AI agent to help."
-    },
-    {
-      step: "02",
-      title: "We build your AI agent",
-      description: "Our team customizes your voice agent with your brand voice and business rules."
-    },
-    {
-      step: "03",
-      title: "Go live in days",
-      description: "Your AI receptionist is trained, tested, and ready to handle calls."
-    },
-    {
-      step: "04",
-      title: "Get leads daily",
-      description: "Watch your calendar fill up while you focus on delivering great service."
-    }
-  ];
+  {
+    step: "01",
+    title: "Tell us about your business",
+    description: "Share your industry, goals, and how you want your AI agent to help."
+  },
+  {
+    step: "02",
+    title: "We build your AI agent",
+    description: "Our team customizes your voice agent with your brand voice and business rules."
+  },
+  {
+    step: "03",
+    title: "Go live in days",
+    description: "Your AI receptionist is trained, tested, and ready to handle calls."
+  },
+  {
+    step: "04",
+    title: "Get leads daily",
+    description: "Watch your calendar fill up while you focus on delivering great service."
+  }];
+
 
   const pricingPlans = [
-    {
-      name: "Starter",
-      price: "$99",
-      period: "/mo",
-      features: [
-        "Up to 100 calls/month",
-        "Basic AI voice agent",
-        "SMS follow-up",
-        "Calendar integration",
-        "Email support"
-      ]
-    },
-    {
-      name: "Growth",
-      price: "$199",
-      period: "/mo",
-      features: [
-        "Up to 500 calls/month",
-        "Advanced AI voice agent",
-        "WhatsApp & SMS",
-        "CRM integration",
-        "Priority support",
-        "Custom workflows"
-      ],
-      popular: true
-    },
-    {
-      name: "Enterprise",
-      price: "Custom",
-      period: "",
-      features: [
-        "Unlimited calls",
-        "Multi-location support",
-        "Dedicated success manager",
-        "Custom integrations",
-        "White-label options",
-        "24/7 priority support"
-      ]
-    }
-  ];
+  {
+    name: "Starter",
+    price: "$99",
+    period: "/mo",
+    features: [
+    "Up to 100 calls/month",
+    "Basic AI voice agent",
+    "SMS follow-up",
+    "Calendar integration",
+    "Email support"]
+
+  },
+  {
+    name: "Growth",
+    price: "$199",
+    period: "/mo",
+    features: [
+    "Up to 500 calls/month",
+    "Advanced AI voice agent",
+    "WhatsApp & SMS",
+    "CRM integration",
+    "Priority support",
+    "Custom workflows"],
+
+    popular: true
+  },
+  {
+    name: "Enterprise",
+    price: "Custom",
+    period: "",
+    features: [
+    "Unlimited calls",
+    "Multi-location support",
+    "Dedicated success manager",
+    "Custom integrations",
+    "White-label options",
+    "24/7 priority support"]
+
+  }];
+
 
   const whyDreamB = [
-    { icon: Shield, text: "No lock-in contracts" },
-    { icon: Zap, text: "Free 14-day pilot" },
-    { icon: Rocket, text: "Fast setup (under 7 days)" },
-    { icon: Users, text: "Human fallback available" },
-    { icon: Languages, text: "Multilingual support" },
-    { icon: Globe, text: "Global reach & availability" }
-  ];
+  { icon: Shield, text: "No lock-in contracts" },
+  { icon: Zap, text: "Free 14-day pilot" },
+  { icon: Rocket, text: "Fast setup (under 7 days)" },
+  { icon: Users, text: "Human fallback available" },
+  { icon: Languages, text: "Multilingual support" },
+  { icon: Globe, text: "Global reach & availability" }];
+
 
   return (
     <div className="App">
@@ -210,8 +210,8 @@ function App() {
       <header className="header">
         <div className="container header-content">
           <div className="logo">
-            <div className="logo-main">DBC</div>
-            <div className="logo-sub">DreamB,</div>
+            <div className="logo-main"></div>
+            <div className="logo-main">DreamB,</div>
           </div>
           <nav className="nav">
             <a href="#services">Services</a>
@@ -300,8 +300,8 @@ function App() {
                   <Icon className="service-icon" />
                   <h3 className="service-title">{service.title}</h3>
                   <p className="service-description">{service.description}</p>
-                </Card>
-              );
+                </Card>);
+
             })}
           </div>
         </div>
@@ -318,8 +318,8 @@ function App() {
                 <div key={index} className="industry-item">
                   <Icon className="industry-icon" />
                   <p className="industry-name">{industry.name}</p>
-                </div>
-              );
+                </div>);
+
             })}
           </div>
         </div>
@@ -330,13 +330,13 @@ function App() {
         <div className="container">
           <h2 className="section-title">How It Works</h2>
           <div className="steps-grid">
-            {howItWorks.map((item, index) => (
-              <div key={index} className="step-item">
+            {howItWorks.map((item, index) =>
+            <div key={index} className="step-item">
                 <div className="step-number">{item.step}</div>
                 <h3 className="step-title">{item.title}</h3>
                 <p className="step-description">{item.description}</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -350,8 +350,8 @@ function App() {
             <span className="notice-text">Prices vary region to region and country to country.</span>
           </div>
           <div className="pricing-grid">
-            {pricingPlans.map((plan, index) => (
-              <Card key={index} className={`pricing-card ${plan.popular ? 'popular' : ''}`}>
+            {pricingPlans.map((plan, index) =>
+            <Card key={index} className={`pricing-card ${plan.popular ? 'popular' : ''}`}>
                 {plan.popular && <div className="popular-badge">Most Popular</div>}
                 <h3 className="pricing-plan-name">{plan.name}</h3>
                 <div className="pricing-amount">
@@ -359,15 +359,15 @@ function App() {
                   <span className="period">{plan.period}</span>
                 </div>
                 <ul className="pricing-features">
-                  {plan.features.map((feature, idx) => (
-                    <li key={idx} className="pricing-feature">
+                  {plan.features.map((feature, idx) =>
+                <li key={idx} className="pricing-feature">
                       <CheckCircle2 className="feature-check" />
                       {feature}
                     </li>
-                  ))}
+                )}
                 </ul>
               </Card>
-            ))}
+            )}
           </div>
           <div className="pricing-cta">
             <Button onClick={scrollToInquiry} size="lg" className="btn-primary">
@@ -388,8 +388,8 @@ function App() {
                 <div key={index} className="why-item">
                   <Icon className="why-icon" />
                   <p className="why-text">{item.text}</p>
-                </div>
-              );
+                </div>);
+
             })}
           </div>
         </div>
@@ -406,20 +406,20 @@ function App() {
                   type="text"
                   placeholder="Your Name"
                   value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
-                  className="form-input"
-                />
+                  className="form-input" />
+
               </div>
               <div className="form-group">
                 <Input
                   type="email"
                   placeholder="Email Address"
                   value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
-                  className="form-input"
-                />
+                  className="form-input" />
+
               </div>
             </div>
             <div className="form-row">
@@ -428,20 +428,20 @@ function App() {
                   type="tel"
                   placeholder="Phone Number"
                   value={formData.phone}
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   required
-                  className="form-input"
-                />
+                  className="form-input" />
+
               </div>
               <div className="form-group">
                 <Input
                   type="text"
                   placeholder="Business Name"
                   value={formData.businessName}
-                  onChange={(e) => setFormData({...formData, businessName: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
                   required
-                  className="form-input"
-                />
+                  className="form-input" />
+
               </div>
             </div>
             <div className="form-row">
@@ -450,13 +450,13 @@ function App() {
                   type="text"
                   placeholder="Country"
                   value={formData.country}
-                  onChange={(e) => setFormData({...formData, country: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, country: e.target.value })}
                   required
-                  className="form-input"
-                />
+                  className="form-input" />
+
               </div>
               <div className="form-group">
-                <Select value={formData.service} onValueChange={(value) => setFormData({...formData, service: value})} required>
+                <Select value={formData.service} onValueChange={(value) => setFormData({ ...formData, service: value })} required>
                   <SelectTrigger className="form-select">
                     <SelectValue placeholder="Select Service" />
                   </SelectTrigger>
@@ -473,11 +473,11 @@ function App() {
               <Textarea
                 placeholder="Your Message"
                 value={formData.message}
-                onChange={(e) => setFormData({...formData, message: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 required
                 className="form-textarea"
-                rows={5}
-              />
+                rows={5} />
+
             </div>
             <Button type="submit" size="lg" className="btn-primary form-submit">
               Submit Inquiry
@@ -503,8 +503,8 @@ function App() {
       <footer className="footer">
         <div className="container footer-content">
           <div className="footer-logo">
-            <div className="logo-main">DBC</div>
-            <div className="logo-sub">DreamB,</div>
+            <div className="logo-main"></div>
+            <div className="logo-main">DreamB,</div>
           </div>
           <div className="footer-info">
             <p className="footer-email">hello@dreamb.com</p>
@@ -512,8 +512,8 @@ function App() {
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>);
+
 }
 
 export default App;
