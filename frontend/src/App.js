@@ -503,12 +503,12 @@ function App() {
       <footer className="footer">
         <div className="container footer-content">
           <div className="footer-logo">
-            <div className="logo-main"></div>
-            <div className="logo-main">DreamB,</div>
+            <div className="logo-main">DBC</div>
+            <div className="logo-sub">DreamB Solutions</div>
           </div>
           <div className="footer-info">
             <p className="footer-email">hello@dreamb.com</p>
-            <p className="footer-copyright">© 2026 DreamB, — All rights reserved</p>
+            <p className="footer-copyright">© 2026 DreamB Solutions — All rights reserved</p>
           </div>
         </div>
       </footer>
