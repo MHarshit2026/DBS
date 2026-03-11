@@ -210,8 +210,8 @@ function App() {
       <header className="header">
         <div className="container header-content">
           <div className="logo">
-            <div className="logo-main"></div>
-            <div className="logo-main">DreamB,</div>
+            <div className="logo-main">DBC</div>
+            <div className="logo-sub">DreamB Solutions</div>
           </div>
           <nav className="nav">
             <a href="#services">Services</a>
