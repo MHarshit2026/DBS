@@ -99,12 +99,8 @@ function App() {
     title: "AI-Powered Websites",
     description: "Get a conversion-optimized website built with AI technology and smart integrations.",
     icon: Globe
-  },
-  {
-    title: "CRM & Calendar Integration",
-    description: "Seamlessly sync with your existing tools. Appointments booked directly to your calendar.",
-    icon: Calendar
-  }];
+  }
+];
 
 
   const industries = [
