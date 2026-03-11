@@ -380,7 +380,7 @@ function App() {
       {/* Why DreamB Section */}
       <section className="section why-section">
         <div className="container">
-          <h2 className="section-title">Why DreamB,</h2>
+          <h2 className="section-title">Why DreamB Solutions</h2>
           <div className="why-grid">
             {whyDreamB.map((item, index) => {
               const Icon = item.icon;
