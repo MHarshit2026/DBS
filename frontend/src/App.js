@@ -509,8 +509,7 @@ function App() {
       <footer className="footer">
         <div className="container footer-content">
           <div className="footer-logo">
-            <div className="logo-main">DBC</div>
-            <div className="logo-sub">DreamB Solutions</div>
+            <div className="logo-main">DreamB Solutions</div>
           </div>
           <div className="footer-info">
             <p className="footer-email">hello@dreamb.com</p>
