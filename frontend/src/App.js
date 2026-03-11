@@ -154,32 +154,35 @@ function App() {
   const pricingPlans = [
   {
     name: "Starter",
-    price: "$99",
+    setup: "$4,000",
+    price: "$497",
     period: "/mo",
     features: [
-    "Up to 100 calls/month",
-    "Basic AI voice agent",
+    "Up to 300 calls/month",
+    "AI voice agent (inbound + outbound)",
     "SMS follow-up",
-    "Calendar integration",
-    "Email support"]
+    "Calendar booking",
+    "Priority email support"]
 
   },
   {
     name: "Growth",
-    price: "$199",
+    setup: "$5,500",
+    price: "$697",
     period: "/mo",
     features: [
-    "Up to 500 calls/month",
+    "Up to 600 calls/month",
     "Advanced AI voice agent",
-    "WhatsApp & SMS",
-    "CRM integration",
-    "Priority support",
-    "Custom workflows"],
+    "WhatsApp + SMS",
+    "Missed call recovery",
+    "Custom workflows",
+    "Priority support"],
 
     popular: true
   },
   {
     name: "Enterprise",
+    setup: "Custom",
     price: "Custom",
     period: "",
     features: [
