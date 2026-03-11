@@ -263,7 +263,7 @@ function App() {
       {/* The Solution Section */}
       <section className="section solution-section">
         <div className="container">
-          <h2 className="section-title">The DreamB Solutions Solution</h2>
+          <h2 className="section-title">The DreamB Solutions Advantage</h2>
           <p className="section-subtitle">Your AI Receptionist. Always On. Never Late.</p>
           <div className="solution-grid">
             <div className="solution-item">
