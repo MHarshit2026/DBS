@@ -357,6 +357,10 @@ function App() {
             <Card key={index} className={`pricing-card ${plan.popular ? 'popular' : ''}`}>
                 {plan.popular && <div className="popular-badge">Most Popular</div>}
                 <h3 className="pricing-plan-name">{plan.name}</h3>
+                <div className="pricing-setup">
+                  <span className="setup-label">Setup:</span>
+                  <span className="setup-price">{plan.setup}</span>
+                </div>
                 <div className="pricing-amount">
                   <span className="price">{plan.price}</span>
                   <span className="period">{plan.period}</span>
