@@ -397,7 +397,7 @@
   left: 50%;
   transform: translateX(-50%);
   background-color: #FFFFFF;
-  color: #000000;
+  color: #000000 !important;
   padding: 6px 20px;
   font-size: 12px;
   font-weight: 700;

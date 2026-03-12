@@ -1,4 +1,5 @@
 import { useState } from "react";
+import emailjs from "@emailjs/browser";
 import "./App.css";
 import { Button } from "./components/ui/button";
 import { Card } from "./components/ui/card";
@@ -9,6 +10,7 @@ import { Toaster, toast } from "sonner";
 import {
   Phone,
   Calendar,
+  Loader2,
   MessageSquare,
   Clock,
   Globe,
@@ -40,6 +42,22 @@ import {
   Languages } from
 "lucide-react";
 
+// ============================================================
+// CONFIGURATION — Replace these with your own credentials
+// ============================================================
+// EmailJS: Sign up at https://www.emailjs.com (free: 200 emails/month)
+//   1. Add an email service (Gmail, Outlook, etc.) → copy Service ID
+//   2. Create an email template → copy Template ID
+//   3. Go to Account → copy Public Key
+const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";   // e.g. "service_abc123"
+const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID"; // e.g. "template_xyz789"
+const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";    // e.g. "AbCdEfGhIjK"
+
+// Calendly: Sign up at https://calendly.com (free tier available)
+//   Replace with your event link, e.g. "https://calendly.com/your-name/30min"
+const CALENDLY_URL = "https://calendly.com/mharshitaripaka2026/30min";
+// ============================================================
+
 function App() {
   const [formData, setFormData] = useState({
     name: "",
@@ -50,23 +68,55 @@ function App() {
     service: "",
     message: ""
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+
 
   const scrollToInquiry = () => {
     document.getElementById('inquiry-form').scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleSubmit = (e) => {
+  const scrollToBookCall = () => {
+    document.getElementById('book-call').scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    toast.success("Thank you! Your inquiry has been submitted successfully.");
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      businessName: "",
-      country: "",
-      service: "",
-      message: ""
-    });
+    setIsSubmitting(true);
+
+    const templateParams = {
+      from_name: formData.name,
+      from_email: formData.email,
+      phone: formData.phone,
+      business_name: formData.businessName,
+      country: formData.country,
+      service: formData.service,
+      message: formData.message,
+    };
+
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_PUBLIC_KEY
+      );
+      toast.success("Thank you! Your inquiry has been submitted successfully.");
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        businessName: "",
+        country: "",
+        service: "",
+        message: ""
+      });
+    } catch (error) {
+      console.error("EmailJS error:", error);
+      toast.error("Something went wrong. Please try again or email us directly at hello@dreamb.com");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const services = [
@@ -227,11 +277,9 @@ function App() {
             AI voice agents that answer calls 24/7, book appointments, and capture leads—so you can focus on growing your business.
           </p>
           <div className="hero-buttons">
-            <Button asChild size="lg" className="btn-primary">
-              <a href="#calendly-link-here" target="_blank" rel="noopener noreferrer">
-                <Calendar className="btn-icon" />
-                Book a Call
-              </a>
+            <Button size="lg" className="btn-primary" onClick={scrollToBookCall}>
+              <Calendar className="btn-icon" />
+              Book a Call
             </Button>
             <Button onClick={scrollToInquiry} size="lg" variant="outline" className="btn-secondary">
               <MessageSquare className="btn-icon" />
@@ -350,7 +398,7 @@ function App() {
           <div className="pricing-grid">
             {pricingPlans.map((plan, index) =>
             <Card key={index} className={`pricing-card ${plan.popular ? 'popular' : ''}`}>
-                {plan.popular && <div className="popular-badge">Most Popular</div>}
+                {plan.popular && <div className="popular-badge">Recommended</div>}
                 <h3 className="pricing-plan-name">{plan.name}</h3>
                 <div className="pricing-setup">
                   <span className="setup-label">Setup:</span>
@@ -393,6 +441,21 @@ function App() {
                 </div>);
 
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* Book A Call Section */}
+      <section id="book-call" className="section book-call-section">
+        <div className="container">
+          <h2 className="section-title">Schedule Your Consultation</h2>
+          <p className="section-subtitle">Pick a time below and let's discuss how AI can grow your business.</p>
+          <div className="calendly-embed-wrapper" style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid #333', background: '#ffffff', marginTop: '2rem' }}>
+            <div 
+              className="calendly-inline-widget" 
+              data-url={`${CALENDLY_URL}?hide_gdpr_banner=1`}
+              style={{ minWidth: '320px', height: '700px' }} 
+            />
           </div>
         </div>
       </section>
@@ -481,25 +544,31 @@ function App() {
                 rows={5} />
 
             </div>
-            <Button type="submit" size="lg" className="btn-primary form-submit">
-              Submit Inquiry
+            <Button type="submit" size="lg" className="btn-primary form-submit" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="btn-icon animate-spin" />
+                  Sending...
+                </>
+              ) : (
+                "Submit Inquiry"
+              )}
             </Button>
           </form>
         </div>
       </section>
 
-      {/* Final CTA Section */}
+      {/* Final CTA Section 
       <section className="section cta-section">
         <div className="container cta-content">
           <h2 className="cta-title">Ready to Stop Missing Calls?</h2>
-          <Button asChild size="lg" className="btn-primary">
-            <a href="#calendly-link-here" target="_blank" rel="noopener noreferrer">
-              <Calendar className="btn-icon" />
-              Book a Free Call
-            </a>
+          <Button size="lg" className="btn-primary" onClick={scrollToBookCall}>
+            <Calendar className="btn-icon" />
+            Book a Free Call
           </Button>
         </div>
       </section>
+      */}
 
       {/* Footer */}
       <footer className="footer">
