@@ -41,6 +41,7 @@ import {
   Rocket,
   Languages } from
 "lucide-react";
+import { Chatbot } from "./components/Chatbot";
 
 // ============================================================
 // CONFIGURATION — Replace these with your own credentials
@@ -254,6 +255,7 @@ function App() {
   return (
     <div className="App">
       <Toaster position="top-center" richColors />
+      <Chatbot />
       
       {/* Header */}
       <header className="header">
