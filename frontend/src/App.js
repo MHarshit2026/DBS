@@ -56,7 +56,7 @@ const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";    // e.g. "AbCdEfGhIjK"
 
 // Calendly: Sign up at https://calendly.com (free tier available)
 //   Replace with your event link, e.g. "https://calendly.com/your-name/30min"
-const CALENDLY_URL = "https://calendly.com/mharshitaripaka2026/30min";
+const CALENDLY_URL = "https://calendly.com/mharshitaripaka2026/new-meeting";
 // ============================================================
 
 function App() {
