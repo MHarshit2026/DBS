@@ -42,6 +42,7 @@ import {
   Languages } from
 "lucide-react";
 import { Chatbot } from "./components/Chatbot";
+import { InlineWidget } from "react-calendly";
 
 // ============================================================
 // CONFIGURATION — Replace these with your own credentials
@@ -453,10 +454,9 @@ function App() {
           <h2 className="section-title">Schedule Your Consultation</h2>
           <p className="section-subtitle">Pick a time below and let's discuss how AI can grow your business.</p>
           <div className="calendly-embed-wrapper" style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid #333', background: '#ffffff', marginTop: '2rem' }}>
-            <div 
-              className="calendly-inline-widget" 
-              data-url={`${CALENDLY_URL}?hide_gdpr_banner=1`}
-              style={{ minWidth: '320px', height: '700px' }} 
+            <InlineWidget 
+              url={`${CALENDLY_URL}?hide_gdpr_banner=1`} 
+              styles={{ minWidth: '320px', height: '700px' }} 
             />
           </div>
         </div>
