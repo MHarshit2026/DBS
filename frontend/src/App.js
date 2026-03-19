@@ -50,9 +50,9 @@ import { Chatbot } from "./components/Chatbot";
 //   1. Add an email service (Gmail, Outlook, etc.) → copy Service ID
 //   2. Create an email template → copy Template ID
 //   3. Go to Account → copy Public Key
-const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";   // e.g. "service_abc123"
-const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID"; // e.g. "template_xyz789"
-const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";    // e.g. "AbCdEfGhIjK"
+const EMAILJS_SERVICE_ID = "service_0y3aflo";   // e.g. "service_abc123"
+const EMAILJS_TEMPLATE_ID = "template_rmqnuio"; // e.g. "template_xyz789"
+const EMAILJS_PUBLIC_KEY = "leispS6sWeuD-JK-A";    // e.g. "AbCdEfGhIjK"
 
 // Calendly: Sign up at https://calendly.com (free tier available)
 //   Replace with your event link, e.g. "https://calendly.com/your-name/30min"
