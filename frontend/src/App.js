@@ -579,7 +579,7 @@ function App() {
             <div className="logo-main">DreamB Solutions</div>
           </div>
           <div className="footer-info">
-            <p className="footer-email">hello@dreamb.com</p>
+                <a href="mailto:hello@dreambsolutions.com" className="contact-method-link">hello@dreambsolutions.com</a>
             <p className="footer-copyright">© 2026 DreamB Solutions — All rights reserved</p>
           </div>
         </div>
