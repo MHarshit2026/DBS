@@ -743,25 +743,26 @@ html {
   margin-top: 48px;
 }
 
-/* Override react-calendly popup button */
-.book-cta button {
-  background: #fff !important;
-  color: #000 !important;
-  font-family: 'Inter', sans-serif !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.12em !important;
-  text-transform: uppercase !important;
-  padding: 18px 56px !important;
-  border: 1px solid #fff !important;
-  border-radius: 0 !important;
-  cursor: pointer;
-  transition: background 0.25s, color 0.25s !important;
+.book-cal-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 18px 56px;
+  text-decoration: none;
+  background: #fff;
+  color: #000;
+  border: 1px solid #fff;
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
-.book-cta button:hover {
-  background: transparent !important;
-  color: #fff !important;
+.book-cal-link:hover {
+  background: transparent;
+  color: #fff;
 }
 
 /* ============================================================
