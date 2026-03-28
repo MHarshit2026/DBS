@@ -41,7 +41,6 @@ import {
   Languages } from
 "lucide-react";
 import { Chatbot } from "./components/Chatbot";
-import { PopupWidget } from "react-calendly";
 
 // ============================================================
 // CONFIGURATION — Replace these with your own credentials
@@ -506,13 +505,14 @@ function App() {
             </div>
           </div>
           <div className="book-cta animate-reveal delay-4">
-            <PopupWidget
-              url={`${CALENDLY_URL}?hide_gdpr_banner=1`}
-              rootElement={document.getElementById('root')}
-              text="Pick a Time"
-              textColor="#000000"
-              color="#ffffff"
-            />
+            <a
+              href={`${CALENDLY_URL}?hide_gdpr_banner=1`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary book-cal-link"
+            >
+              Pick a Time
+            </a>
           </div>
         </div>
       </section>
