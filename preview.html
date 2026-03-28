@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DreamB Solutions — AI Voice Agents</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
+  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    /* ── RESET ── */
+    html { scroll-behavior: smooth; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --ease: cubic-bezier(0.65, 0.05, 0, 1); --ease-out: cubic-bezier(0.33,1,0.68,1); }
+    body { background: #000; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(52px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+    .reveal.in-view { opacity: 1; transform: translateY(0); }
+    .d1{transition-delay:.1s} .d2{transition-delay:.22s} .d3{transition-delay:.34s} .d4{transition-delay:.46s}
+
+    /* ── LAYOUT ── */
+    .wrap { max-width: 1300px; margin: 0 auto; padding: 0 48px; }
+
+    /* ── HEADER ── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: rgba(0,0,0,.9); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      padding: 20px 0; z-index: 200;
+    }
+    .hdr { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 18px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+    nav { display: flex; gap: 48px; align-items: center; }
+    nav a { font-size: 12px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; opacity: .5; transition: opacity .25s; }
+    nav a:hover { opacity: 1; }
+
+    /* Mobile hamburger */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 1.5px; background: #fff; transition: all .3s; }
+    .mobile-nav {
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: #000; z-index: 190; flex-direction: column;
+      justify-content: center; align-items: center; gap: 40px;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a { font-size: 24px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; opacity: .7; }
+    .mobile-nav a:hover { opacity: 1; }
+    .mobile-close { position: absolute; top: 24px; right: 24px; background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: #fff; color: #000; padding: 14px 28px;
+      font-size: 14px; font-weight: 600; letter-spacing: .02em;
+      opacity: 0; transition: all .4s var(--ease-out); z-index: 9999;
+      white-space: nowrap; pointer-events: none;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    #toast.error { background: #111; color: #fff; border: 1px solid rgba(255,255,255,.2); }
+
+    /* ── HERO ── */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 0 72px; overflow: hidden; }
+    .title-row { overflow: hidden; }
+    .title-line {
+      display: block; font-size: clamp(56px, 10.5vw, 148px);
+      font-weight: 900; text-transform: uppercase;
+      letter-spacing: -.035em; line-height: .92;
+      transform: translateY(110%);
+      animation: slideUp .9s var(--ease) forwards;
+    }
+    .title-line.l2{animation-delay:.22s} .title-line.l3{animation-delay:.34s}
+    @keyframes slideUp { to { transform: translateY(0); } }
+    .hero-meta {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 48px; margin-top: 48px;
+      opacity: 0; animation: fadeIn .8s var(--ease-out) .55s forwards;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+    .hero-sub { font-size: clamp(14px,1.5vw,17px); line-height: 1.7; opacity: .55; max-width: 440px; }
+    .btns { display: flex; gap: 12px; flex-shrink: 0; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600;
+      letter-spacing: .12em; text-transform: uppercase; padding: 14px 32px;
+      cursor: pointer; border: none; transition: background .25s, color .25s, border-color .25s;
+    }
+    .btn-w { background: #fff; color: #000; border: 1px solid #fff; }
+    .btn-w:hover { background: transparent; color: #fff; }
+    .btn-o { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.35); }
+    .btn-o:hover { background: #fff; color: #000; border-color: #fff; }
+
+    /* ── SECTIONS ── */
+    section { padding: 120px 0; border-bottom: 1px solid rgba(255,255,255,.07); overflow: hidden; }
+    .label { display: block; font-size: 11px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; opacity: .35; margin-bottom: 28px; }
+    h2 { font-size: clamp(32px,5.5vw,76px); font-weight: 900; letter-spacing: -.03em; line-height: .95; text-transform: uppercase; margin-bottom: 24px; }
+    .sub { font-size: clamp(15px,1.6vw,18px); line-height: 1.65; opacity: .55; max-width: 520px; margin-bottom: 72px; }
+    .center { text-align: center; }
+    .center .sub { margin-left: auto; margin-right: auto; }
+
+    /* ── PROBLEM ── */
+    .problem-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start; }
+    .pb { font-size: clamp(15px,1.5vw,17px); line-height: 1.85; opacity: .7; margin-bottom: 28px; }
+    .pb strong { font-weight: 700; opacity: 1; }
+
+    /* ── DIVIDER GRIDS ── */
+    .dgrid { display: grid; gap: 1px; background: rgba(255,255,255,.08); }
+    .dgrid-4 { grid-template-columns: repeat(4,1fr); }
+    .dgrid-3 { grid-template-columns: repeat(3,1fr); }
+    .dcell { background: #000; padding: 56px 40px; transition: background .25s; }
+    .dcell:hover { background: rgba(255,255,255,.04); }
+    .dcell .icon { width: 34px; height: 34px; stroke: #fff; stroke-width: 1.5; fill: none; opacity: .7; margin-bottom: 32px; display: block; }
+    .dcell h3 { font-size: 18px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 12px; }
+    .dcell p { font-size: 14px; opacity: .55; line-height: 1.65; }
+
+    /* ── SERVICE CARDS — clip-path hover fill ── */
+    .scard { background: #000; padding: 56px 40px; position: relative; overflow: hidden; cursor: default; }
+    .scard::after { content: ''; position: absolute; inset: 0; background: #fff; clip-path: ellipse(110% 0% at 50% 100%); transition: clip-path .65s var(--ease); z-index: 0; pointer-events: none; }
+    .scard:hover::after { clip-path: ellipse(110% 160% at 50% 100%); }
+    .scard > * { position: relative; z-index: 1; transition: color .6s var(--ease); }
+    .scard:hover .scard-icon,.scard:hover .sc-title,.scard:hover .sc-desc { color: #000 !important; stroke: #000; }
+    .scard-icon { width: 34px; height: 34px; stroke: #fff; stroke-width: 1.5; fill: none; margin-bottom: 32px; display: block; }
+    .sc-title { font-size: 19px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 14px; }
+    .sc-desc { font-size: 14px; line-height: 1.7; opacity: .6; }
+
+    /* ── MARQUEE ── */
+    .mq-wrap { overflow: hidden; margin-top: 52px; }
+    .mq-track { display: flex; width: max-content; animation: ticker 40s linear infinite; }
+    .mq-track:hover { animation-play-state: paused; }
+    @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .ind { display: flex; align-items: center; gap: 14px; padding: 0 44px; height: 72px; border-left: 1px solid rgba(255,255,255,.1); white-space: nowrap; transition: opacity .25s; }
+    .ind:hover { opacity: .55; }
+    .ind svg { width: 22px; height: 22px; stroke: #fff; stroke-width: 1.5; fill: none; opacity: .5; flex-shrink: 0; }
+    .ind span { font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+
+    /* ── STEPS ── */
+    .step-num { font-size: clamp(72px,9vw,132px); font-weight: 900; opacity: .07; line-height: 1; margin-bottom: 28px; letter-spacing: -.05em; }
+
+    /* ── PRICING ── */
+    .p-notice { border: 1px solid rgba(255,255,255,.15); padding: 14px 24px; text-align: center; max-width: 480px; margin: 0 auto 72px; display: flex; align-items: center; justify-content: center; gap: 12px; }
+    .p-notice span { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; opacity: .6; }
+    .plan-label { font-size: 11px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; opacity: .4; margin-bottom: 44px; }
+    .plan-setup { margin-bottom: 8px; font-size: 14px; opacity: .55; }
+    .plan-price { font-size: clamp(44px,5vw,68px); font-weight: 900; letter-spacing: -.04em; line-height: 1; }
+    .plan-period { font-size: 15px; opacity: .45; margin-left: 4px; }
+    .plan-amount { margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .plan-features { list-style: none; }
+    .plan-features li { display: flex; align-items: center; gap: 14px; font-size: 14px; opacity: .7; margin-bottom: 18px; }
+    .plan-features li svg { width: 15px; height: 15px; stroke: #fff; stroke-width: 2.5; fill: none; opacity: .5; flex-shrink: 0; }
+    .pop-badge { position: absolute; top: 0; right: 0; background: #fff; color: #000; padding: 6px 16px; font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+    .pcell { position: relative; }
+    .pcell.pop { background: rgba(255,255,255,.04) !important; }
+
+    /* ── WHY ── */
+    .why-cell { display: flex; align-items: center; gap: 20px; padding: 40px; transition: background .25s; }
+    .why-cell:hover { background: rgba(255,255,255,.04); }
+    .why-cell svg { width: 30px; height: 30px; stroke: #fff; stroke-width: 1.5; fill: none; opacity: .6; flex-shrink: 0; }
+    .why-cell span { font-size: 15px; font-weight: 600; }
+
+    /* ── BOOK A CALL ── */
+    .book-details {
+      display: flex;
+      justify-content: center;
+      gap: 56px;
+      margin-top: 56px;
+      flex-wrap: wrap;
+    }
+    .book-detail-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      font-weight: 500;
+      opacity: .6;
+    }
+    .book-detail-item svg { opacity: .7; flex-shrink: 0; }
+    .book-cal-btn { font-size: 14px; padding: 18px 56px; }
+
+    /* ── FORM ── */
+    .form-wrap { max-width: 720px; margin: 72px auto 0; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 32px; }
+    .form-wrap input, .form-wrap select, .form-wrap textarea {
+      width: 100%; background: transparent; border: none;
+      border-bottom: 1px solid rgba(255,255,255,.18); color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 14px; padding: 16px 0;
+      outline: none; transition: border-color .25s; letter-spacing: .02em;
+    }
+    .form-wrap input:focus,.form-wrap select:focus,.form-wrap textarea:focus { border-bottom-color: #fff; }
+    .form-wrap input::placeholder,.form-wrap textarea::placeholder { color: rgba(255,255,255,.3); }
+    .form-wrap select { -webkit-appearance: none; appearance: none; cursor: pointer; }
+    .form-wrap select option { background: #111; }
+    .form-wrap textarea { min-height: 120px; resize: vertical; margin-bottom: 32px; }
+    .form-wrap .btn { width: 100%; justify-content: center; margin-top: 8px; }
+    .form-wrap .btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    /* ── CHATBOT ── */
+    .chat-btn {
+      position: fixed; bottom: 28px; right: 28px; z-index: 500;
+      width: 56px; height: 56px; background: #fff; border-radius: 50%;
+      border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 24px rgba(0,0,0,.5);
+      transition: transform .3s var(--ease), background .25s;
+    }
+    .chat-btn:hover { transform: scale(1.08); }
+    .chat-btn svg { width: 24px; height: 24px; stroke: #000; stroke-width: 2; fill: none; }
+    .chat-window {
+      position: fixed; bottom: 96px; right: 28px; z-index: 500;
+      width: 360px; max-height: 520px;
+      background: #111; border: 1px solid rgba(255,255,255,.12);
+      display: none; flex-direction: column; overflow: hidden;
+    }
+    .chat-window.open { display: flex; }
+    .chat-head {
+      padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,.08);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .chat-dot { width: 8px; height: 8px; background: #4caf50; border-radius: 50%; }
+    .chat-head-title { font-size: 14px; font-weight: 600; }
+    .chat-head-sub { font-size: 12px; opacity: .45; }
+    .chat-msgs { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; min-height: 240px; max-height: 320px; }
+    .msg { max-width: 85%; padding: 10px 14px; font-size: 13px; line-height: 1.5; }
+    .msg.bot { background: rgba(255,255,255,.08); align-self: flex-start; }
+    .msg.user { background: #fff; color: #000; align-self: flex-end; }
+    .chat-input-row { display: flex; border-top: 1px solid rgba(255,255,255,.08); }
+    .chat-input-row input {
+      flex: 1; background: transparent; border: none; color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 13px; padding: 14px 16px; outline: none;
+    }
+    .chat-input-row input::placeholder { color: rgba(255,255,255,.3); }
+    .chat-send { background: none; border: none; color: #fff; padding: 0 16px; cursor: pointer; opacity: .6; transition: opacity .2s; }
+    .chat-send:hover { opacity: 1; }
+    .chat-send svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+    /* ── FOOTER ── */
+    footer { padding: 56px 0; border-top: 1px solid rgba(255,255,255,.07); }
+    .ft { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+    .ft a { font-size: 13px; opacity: .55; display: block; margin-bottom: 8px; transition: opacity .25s; }
+    .ft a:hover { opacity: 1; }
+    .ft p { font-size: 11px; opacity: .28; letter-spacing: .06em; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .dgrid-4 { grid-template-columns: repeat(2,1fr); }
+      .dgrid-3 { grid-template-columns: repeat(2,1fr); }
+      .problem-grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+    @media (max-width: 768px) {
+      .wrap { padding: 0 20px; }
+      section { padding: 72px 0; }
+      .hero { padding: 0 0 52px; }
+      .hero-meta { flex-direction: column; gap: 28px; }
+      .btns { flex-direction: column; width: 100%; }
+      .btn { width: 100%; justify-content: center; }
+      /* Hide desktop nav, show hamburger */
+      nav { display: none; }
+      .hamburger { display: flex; }
+      /* Collapse all grids to 1 column */
+      .dgrid-4,.dgrid-3 { grid-template-columns: 1fr; }
+      .dcell,.scard { padding: 36px 20px; }
+      .why-cell { padding: 28px 20px; }
+      /* Book a call section */
+      .book-details { flex-direction: column; gap: 20px; align-items: center; margin-top: 40px; }
+      .book-cal-btn { width: 100%; justify-content: center; }
+      /* Form */
+      .form-wrap { margin-top: 48px; }
+      .form-row { grid-template-columns: 1fr; gap: 0; margin-bottom: 0; }
+      .form-row > * { margin-bottom: 20px; }
+      /* Footer */
+      .ft { flex-direction: column; text-align: center; }
+      .ft div { text-align: center; }
+      /* Chatbot */
+      .chat-window { width: calc(100vw - 32px); right: 16px; bottom: 88px; }
+      .chat-btn { bottom: 20px; right: 20px; }
+      /* Pricing */
+      .p-notice { margin: 0 20px 48px; }
+      /* Section spacing */
+      h2 { margin-bottom: 16px; }
+      .sub { margin-bottom: 48px; }
+    }
+    @media (max-width: 480px) {
+      /* Hero title scales naturally via clamp — no override needed */
+      .step-num { font-size: 64px; }
+      .plan-price { font-size: 48px; }
+      /* Marquee items slightly smaller */
+      .ind { padding: 0 28px; }
+      .ind span { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── MOBILE NAV ── -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-close" onclick="closeMobileNav()">✕</button>
+  <a href="#services" onclick="closeMobileNav();goTo('services');return false;">Services</a>
+  <a href="#pricing" onclick="closeMobileNav();goTo('pricing');return false;">Pricing</a>
+  <a href="#book-call" onclick="closeMobileNav();goTo('book-call');return false;">Book a Call</a>
+  <a href="#contact" onclick="closeMobileNav();goTo('contact');return false;">Contact</a>
+</div>
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="wrap hdr">
+    <div class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">DreamB Solutions</div>
+    <nav>
+      <a href="#services" onclick="goTo('services');return false;">Services</a>
+      <a href="#pricing" onclick="goTo('pricing');return false;">Pricing</a>
+      <a href="#book-call" onclick="goTo('book-call');return false;">Book a Call</a>
+      <a href="#contact" onclick="goTo('contact');return false;">Contact</a>
+    </nav>
+    <div class="hamburger" onclick="openMobileNav()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</header>
+
+<!-- ── TOAST ── -->
+<div id="toast"></div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="wrap">
+    <h1>
+      <div class="title-row"><span class="title-line">Never Miss</span></div>
+      <div class="title-row"><span class="title-line l2">A Customer</span></div>
+      <div class="title-row"><span class="title-line l3">Again.</span></div>
+    </h1>
+    <div class="hero-meta">
+      <p class="hero-sub">AI voice agents that answer calls 24/7, book appointments, and capture leads—so you can focus on growing your business.</p>
+      <div class="btns">
+        <button class="btn btn-w" onclick="goTo('book-call')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Book a Call
+        </button>
+        <button class="btn btn-o" onclick="goTo('contact')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Send Inquiry
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── THE PROBLEM ── -->
+<section>
+  <div class="wrap problem-grid">
+    <div>
+      <span class="label reveal">The Problem</span>
+      <h2 class="reveal d1">Your calls are going unanswered.</h2>
+    </div>
+    <div>
+      <p class="pb reveal">Every missed call is a missed customer. Studies show that <strong>80% of callers won't leave a voicemail</strong>, and <strong>67% won't call back</strong>. If you're busy with a client, closed for the day, or just can't pick up—those leads go straight to your competitor.</p>
+      <p class="pb reveal d1">Traditional receptionists cost thousands per month, take sick days, and can only handle one call at a time. Your business deserves better.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── THE SOLUTION ── -->
+<section>
+  <div class="wrap">
+    <div class="center">
+      <span class="label reveal">The Solution</span>
+      <h2 class="reveal d1">Always on. Never late.</h2>
+      <p class="sub reveal d2">Your AI Receptionist works around the clock so you never lose another lead.</p>
+    </div>
+    <div class="dgrid dgrid-4">
+      <div class="dcell reveal d1">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        <h3>24/7 Availability</h3><p>Answer calls anytime, even at 3 AM or on holidays.</p>
+      </div>
+      <div class="dcell reveal d2">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        <h3>Zero Salaries</h3><p>No hiring, training, or payroll. Just results.</p>
+      </div>
+      <div class="dcell reveal d3">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        <h3>Instant Callback</h3><p>Missed calls get returned in under 60 seconds.</p>
+      </div>
+      <div class="dcell reveal d4">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        <h3>Multilingual</h3><p>Speak to customers in their preferred language.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ── -->
+<section id="services">
+  <div class="wrap">
+    <div class="center">
+      <span class="label reveal">What We Build</span>
+      <h2 class="reveal d1">Our Services</h2>
+      <p class="sub reveal d2">Every tool you need to automate your front desk and never miss a lead.</p>
+    </div>
+    <div class="dgrid dgrid-3">
+      <div class="scard">
+        <svg class="scard-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.63 3.18 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <div class="sc-title">AI Voice Agents (Inbound)</div>
+        <div class="sc-desc">Answer every incoming call instantly with AI-powered voice agents that sound human.</div>
+      </div>
+      <div class="scard">
+        <svg class="scard-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.63 3.18 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <div class="sc-title">AI Voice Agents (Outbound)</div>
+        <div class="sc-desc">Automate follow-ups, confirmations, and outreach campaigns with intelligent voice agents.</div>
+      </div>
+      <div class="scard">
+        <svg class="scard-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <div class="sc-title">Missed Call Recovery</div>
+        <div class="sc-desc">Never lose a lead again. Automatically call back missed calls within seconds.</div>
+      </div>
+      <div class="scard">
+        <svg class="scard-icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <div class="sc-title">WhatsApp & SMS Follow-Up</div>
+        <div class="sc-desc">Engage customers on their preferred channels with automated messaging.</div>
+      </div>
+      <div class="scard">
+        <svg class="scard-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div class="sc-title">AI Chatbots</div>
+        <div class="sc-desc">Deploy intelligent chatbots on your website to capture and qualify leads 24/7.</div>
+      </div>
+      <div class="scard">
+        <svg class="scard-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <div class="sc-title">AI-Powered Websites</div>
+        <div class="sc-desc">Get a conversion-optimized website built with AI technology and smart integrations.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── INDUSTRIES ── -->
+<section style="padding:80px 0">
+  <div class="wrap center">
+    <span class="label reveal">Who We Serve</span>
+    <h2 class="reveal d1">Industries We Serve</h2>
+  </div>
+  <div class="mq-wrap"><div class="mq-track" id="mq"></div></div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section>
+  <div class="wrap">
+    <div class="center">
+      <span class="label reveal">The Process</span>
+      <h2 class="reveal d1">How It Works</h2>
+      <p class="sub reveal d2">From kickoff to live in under a week.</p>
+    </div>
+    <div class="dgrid dgrid-4">
+      <div class="dcell reveal d1"><div class="step-num">01</div><h3>Tell us about your business</h3><p>Share your industry, goals, and how you want your AI agent to help.</p></div>
+      <div class="dcell reveal d2"><div class="step-num">02</div><h3>We build your AI agent</h3><p>Our team customizes your voice agent with your brand voice and business rules.</p></div>
+      <div class="dcell reveal d3"><div class="step-num">03</div><h3>Go live in days</h3><p>Your AI receptionist is trained, tested, and ready to handle calls.</p></div>
+      <div class="dcell reveal d4"><div class="step-num">04</div><h3>Get leads daily</h3><p>Watch your calendar fill up while you focus on delivering great service.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="center">
+      <span class="label reveal">Investment</span>
+      <h2 class="reveal d1">Pricing</h2>
+    </div>
+    <div class="p-notice reveal d2"><span>⚠️</span><span>Prices vary region to region and country to country.</span></div>
+    <div class="dgrid dgrid-3">
+      <div class="dcell pcell reveal d1">
+        <div class="plan-label">Starter</div>
+        <div class="plan-setup">Setup: <strong>$4,000</strong></div>
+        <div class="plan-amount"><span class="plan-price">$497</span><span class="plan-period">/mo</span></div>
+        <ul class="plan-features">
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Up to 300 calls/month</li>
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>AI voice agent (inbound + outbound)</li>
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>SMS follow-up</li>
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Calendar booking</li>
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Priority email support</li>
+        </ul>
+      </div>
+      <div class="dcell pcell pop reveal d2">
+        <div class="pop-badge">Recommended</div>
+        <div class="plan-label">Growth</div>
+        <div class="plan-setup">Setup: <strong>$5,500</strong></div>
+        <div class="plan-amount"><span class="plan-price">$697</span><span class="plan-period">/mo</span></div>
+        <ul class="plan-features">
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Up to 600 calls/month</li>
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Advanced AI voice agent</li>
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>WhatsApp + SMS</li>
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Missed call recovery</li>
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Custom workflows</li>
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Priority support</li>
+        </ul>
+      </div>
+      <div class="dcell pcell reveal d3">
+        <div class="plan-label">Enterprise</div>
+        <div class="plan-setup">Setup: <strong>Custom</strong></div>
+        <div class="plan-amount"><span class="plan-price">Custom</span></div>
+        <ul class="plan-features">
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Unlimited calls</li>
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Multi-location support</li>
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Dedicated success manager</li>
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Custom integrations</li>
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>White-label options</li>
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>24/7 priority support</li>
+        </ul>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:72px">
+      <button class="btn btn-w" onclick="goTo('contact')">Get a Custom Quote</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY DREAMB ── -->
+<section>
+  <div class="wrap">
+    <div class="center">
+      <span class="label reveal">Why Us</span>
+      <h2 class="reveal d1">Why DreamB Solutions</h2>
+      <p class="sub reveal d2">Built for businesses that refuse to leave growth on the table.</p>
+    </div>
+    <div class="dgrid dgrid-3">
+      <div class="dcell why-cell reveal d1"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>No lock-in contracts</span></div>
+      <div class="dcell why-cell reveal d2"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span>Free 14-day pilot</span></div>
+      <div class="dcell why-cell reveal d3"><svg viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg><span>Fast setup (under 7 days)</span></div>
+      <div class="dcell why-cell reveal d1"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Human fallback available</span></div>
+      <div class="dcell why-cell reveal d2"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>Multilingual support</span></div>
+      <div class="dcell why-cell reveal d3"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>Global reach & availability</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BOOK A CALL ── -->
+<section id="book-call">
+  <div class="wrap">
+    <div class="center">
+      <span class="label reveal">Let's Talk</span>
+      <h2 class="reveal d1">Schedule Your Consultation</h2>
+      <p class="sub reveal d2">Pick a time and let's discuss how AI can grow your business.</p>
+    </div>
+    <!-- Meeting details row -->
+    <div class="book-details reveal d3">
+      <div class="book-detail-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>15 minutes</span>
+      </div>
+      <div class="book-detail-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>Free consultation</span>
+      </div>
+      <div class="book-detail-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 10l4.553-2.069A1 1 0 0 1 21 8.882v6.236a1 1 0 0 1-1.447.894L15 14"/><rect x="1" y="6" width="15" height="12" rx="2"/></svg>
+        <span>Video call — link sent on confirmation</span>
+      </div>
+    </div>
+    <div class="center reveal d4" style="margin-top:48px">
+      <button class="btn btn-w book-cal-btn" onclick="Calendly.initPopupWidget({url:'https://calendly.com/mharshitaripaka2026/new-meeting?hide_gdpr_banner=1'});return false;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Pick a Time
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT FORM ── -->
+<section id="contact">
+  <div class="wrap">
+    <div class="center">
+      <span class="label reveal">Get In Touch</span>
+      <h2 class="reveal d1">Send an Inquiry</h2>
+    </div>
+    <div class="form-wrap reveal d2">
+      <form id="inquiry-form" onsubmit="submitForm(event)">
+        <div class="form-row">
+          <div><input type="text" id="f-name" placeholder="Your Name" required /></div>
+          <div><input type="email" id="f-email" placeholder="Email Address" required /></div>
+        </div>
+        <div class="form-row">
+          <div><input type="tel" id="f-phone" placeholder="Phone Number" required /></div>
+          <div><input type="text" id="f-biz" placeholder="Business Name" required /></div>
+        </div>
+        <div class="form-row">
+          <div><input type="text" id="f-country" placeholder="Country" required /></div>
+          <div>
+            <select id="f-service" required>
+              <option value="" disabled selected>Select Service</option>
+              <option value="voice-agent">Voice Agent</option>
+              <option value="chatbot">Chatbot</option>
+              <option value="website">Website</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+        <textarea id="f-msg" placeholder="Your Message" rows="5" required></textarea>
+        <button type="submit" class="btn btn-w" id="submit-btn">Submit Inquiry</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="wrap ft">
+    <div class="logo">DreamB Solutions</div>
+    <div>
+      <a href="mailto:hello@dreambsolutions.com">hello@dreambsolutions.com</a>
+      <p>© 2026 DreamB Solutions — All rights reserved</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ── CHATBOT ── -->
+<button class="chat-btn" onclick="toggleChat()" id="chatBtn">
+  <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</button>
+<div class="chat-window" id="chatWindow">
+  <div class="chat-head">
+    <div class="chat-dot"></div>
+    <div>
+      <div class="chat-head-title">DreamB AI</div>
+      <div class="chat-head-sub">Always online</div>
+    </div>
+  </div>
+  <div class="chat-msgs" id="chatMsgs">
+    <div class="msg bot">Hi! I'm the DreamB AI assistant. Ask me anything about our services, pricing, or how to get started.</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" id="chatInput" placeholder="Ask something…" onkeydown="if(event.key==='Enter')sendChat()" />
+    <button class="chat-send" onclick="sendChat()">
+      <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  // ── Scroll to section ──
+  function goTo(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ── Mobile nav ──
+  function openMobileNav() { document.getElementById('mobileNav').classList.add('open'); }
+  function closeMobileNav() { document.getElementById('mobileNav').classList.remove('open'); }
+
+  // ── Scroll reveal ──
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    // Fallback: show everything immediately
+    revealEls.forEach(el => el.classList.add('in-view'));
+  }
+  // Safety net: if anything is still hidden after 3s, reveal it
+  setTimeout(() => revealEls.forEach(el => el.classList.add('in-view')), 3000);
+
+  // ── Toast ──
+  function showToast(msg, isError) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'show' + (isError ? ' error' : '');
+    setTimeout(() => t.className = '', 4000);
+  }
+
+  // ── EmailJS form ──
+  emailjs.init('leispS6sWeuD-JK-A');
+  async function submitForm(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.textContent = 'Sending…'; btn.disabled = true;
+    try {
+      await emailjs.send('service_0y3aflo', 'template_rmqnuio', {
+        from_name: document.getElementById('f-name').value,
+        from_email: document.getElementById('f-email').value,
+        phone: document.getElementById('f-phone').value,
+        business_name: document.getElementById('f-biz').value,
+        country: document.getElementById('f-country').value,
+        service: document.getElementById('f-service').value,
+        message: document.getElementById('f-msg').value,
+      });
+      showToast('Thank you! Your inquiry has been submitted.');
+      document.getElementById('inquiry-form').reset();
+    } catch(err) {
+      showToast('Something went wrong. Email us at hello@dreambsolutions.com', true);
+    }
+    btn.textContent = 'Submit Inquiry'; btn.disabled = false;
+  }
+
+  // ── Chatbot ──
+  function toggleChat() {
+    const w = document.getElementById('chatWindow');
+    w.classList.toggle('open');
+    if (w.classList.contains('open')) document.getElementById('chatInput').focus();
+  }
+  function sendChat() {
+    const inp = document.getElementById('chatInput');
+    const text = inp.value.trim(); if (!text) return;
+    addMsg(text, 'user'); inp.value = '';
+    setTimeout(() => addMsg(getBotReply(text), 'bot'), 600);
+  }
+  function addMsg(text, role) {
+    const msgs = document.getElementById('chatMsgs');
+    const d = document.createElement('div');
+    d.className = 'msg ' + role; d.textContent = text;
+    msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
+  }
+  function getBotReply(q) {
+    q = q.toLowerCase();
+    if (/hi|hello|hey/.test(q)) return "Hi there! How can I help you today?";
+    if (/price|pricing|cost|plan/.test(q)) return "We have 3 plans: Starter ($4,000 setup + $497/mo), Growth ($5,500 setup + $697/mo), and Enterprise (custom). Prices vary by region.";
+    if (/trial|pilot|free/.test(q)) return "Yes! We offer a free 14-day pilot so you can see results before committing.";
+    if (/service|offer|do you/.test(q)) return "We offer AI Voice Agents (inbound & outbound), Missed Call Recovery, WhatsApp/SMS follow-up, AI Chatbots, and AI-powered websites.";
+    if (/setup|long|time|how fast/.test(q)) return "We typically go live in under 7 days from kickoff!";
+    if (/language|multilingual/.test(q)) return "Yes, our AI agents support multiple languages to serve your customers wherever they are.";
+    if (/contact|email|reach/.test(q)) return "You can email us at hello@dreambsolutions.com or book a call using the scheduler above.";
+    if (/book|call|schedule/.test(q)) return "You can book a free consultation using the Calendly widget on this page. Just scroll up to 'Schedule Your Consultation'!";
+    return "Great question! For detailed info, you can book a free call or email us at hello@dreambsolutions.com — we'd love to help.";
+  }
+
+  // ── Industries marquee ──
+  const industries = [
+    ['Salons & Spas','M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z'],
+    ['Clinics','M22 12h-4l-3 9L9 3l-3 9H2'],
+    ['Real Estate','M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'],
+    ['Dental','M12 2a5 5 0 0 1 5 5c0 3-5 13-5 13S7 10 7 7a5 5 0 0 1 5-5z'],
+    ['Gyms & Fitness','M18 8h1a4 4 0 0 1 0 8h-1M6 8H5a4 4 0 0 0 0 8h1M6 12h12M8 8v8M16 8v8'],
+    ['Coaching','M22 10v6M2 10l10-5 10 5-10 5z'],
+    ['Home Services','M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'],
+    ['Auto Repair','M5 17H3v-4l2-8h14l2 8v4h-2M5 17a2 2 0 0 0 4 0M15 17a2 2 0 0 0 4 0'],
+    ['Restaurants','M18 8h1a4 4 0 0 1 0 8h-1M6 8H5a4 4 0 0 0 0 8h1m4-8v8m4-8v8'],
+    ['Law Firms','M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5'],
+    ['Consulting','M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z'],
+    ['Hotels','M3 22V12h18v10M3 12l9-9 9 9'],
+    ['E-commerce','M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18m-9 5v6m-3-3h6'],
+    ['Logistics','M1 3h15v13H1zM16 8h4l3 3v5h-7V8z'],
+    ['Financial Services','M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6'],
+    ['Pet Services','M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'],
+    ['Photography','M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z'],
+    ['Education','M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z'],
+  ];
+  const mq = document.getElementById('mq');
+  mq.innerHTML = [...industries,...industries].map(([name,path]) =>
+    `<div class="ind"><svg viewBox="0 0 24 24"><path d="${path}"/></svg><span>${name}</span></div>`
+  ).join('');
+</script>
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+</body>
+</html>
