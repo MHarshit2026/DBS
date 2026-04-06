@@ -69,7 +69,7 @@ export function Chatbot() {
 
     // Support
     if (q.includes('support') || q.includes('help')) {
-      return "For direct support, please email us at hello@dreamb.com.";
+      return "For direct support, please email us at hello@dreambsolutions.com.";
     }
 
     // Default Fallback
