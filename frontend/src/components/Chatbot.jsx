@@ -7,7 +7,7 @@ import { MessageCircle, X, Send, Bot, User } from 'lucide-react';
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Hi there! I am your AI assistant for DreamB Solutions. How can I help you today?' },
+    { role: 'assistant', content: 'Hi there! I\'m here to help you learn about DreamB Solutions. How can I help you today?' },
   ]);
   const [input, setInput] = useState('');
   const scrollRef = useRef(null);
@@ -36,44 +36,59 @@ export function Chatbot() {
 
   const getBotResponse = (query) => {
     const q = query.toLowerCase();
-    
+
     // Greeting
     if (q.match(/\b(hi|hello|hey|greetings)\b/)) {
-      return "Hello! How can I assist you with DreamB Solutions today?";
+      return "Hello! How can I help you today? I can tell you about our services, how we work, or help you get started.";
     }
-    
-    // Pricing
-    if (q.includes('price') || q.includes('cost') || q.includes('how much') || q.includes('plan')) {
-      return "Our Starter plan is $497/mo, Growth plan is $697/mo, and Enterprise is customized. Check the Pricing section below for more details!";
+
+    // Services / What do you do
+    if (q.includes('service') || q.includes('what do you do') || q.includes('offer') || q.includes('what do you build')) {
+      return "We build three things: AI automation, modern websites, and mobile apps — all built specifically around your business.";
     }
-    
+
+    // Websites
+    if (q.includes('website') || q.includes('web') || q.includes('landing page') || q.includes('ecommerce') || q.includes('portal')) {
+      return "We design and build websites that convert — from AI-powered business sites to booking platforms, e-commerce stores, and client portals.";
+    }
+
+    // AI Automation
+    if (q.includes('ai') || q.includes('automation') || q.includes('automate') || q.includes('chatbot') || q.includes('voice') || q.includes('whatsapp') || q.includes('bot')) {
+      return "We automate repetitive business processes using AI — customer communication, lead follow-up, document processing, scheduling, workflow routing, and more. It runs 24/7 without adding headcount.";
+    }
+
+    // Mobile Apps
+    if (q.includes('mobile') || q.includes('app') || q.includes('ios') || q.includes('android')) {
+      return "Yes! We build iOS and Android apps — both customer-facing and for your internal team. Native performance, modern design.";
+    }
+
+    // Pricing / Cost
+    if (q.includes('price') || q.includes('cost') || q.includes('how much') || q.includes('pricing') || q.includes('quote')) {
+      return "We don't have fixed pricing — every project is scoped to your specific needs. Book a free 15-minute discovery call and we'll put together a clear plan for you.";
+    }
+
     // Contact / Booking
-    if (q.includes('contact') || q.includes('book') || q.includes('call') || q.includes('meet') || q.includes('demo')) {
-      return "You can book a free consultation call from the 'Book a Call' section on our site, or fill out the Contact form at the bottom!";
-    }
-    
-    // Services
-    if (q.includes('service') || q.includes('what do you do') || q.includes('offer') || q.includes('features')) {
-      return "We build AI voice agents for inbound & outbound calls, offer missed call recovery, AI chatbots, WhatsApp/SMS follow-ups, and AI-powered websites. Which one interests you?";
-    }
-    
-    // Pilot / Trial
-    if (q.includes('free') || q.includes('pilot') || q.includes('trial')) {
-      return "Yes! We offer a free 14-day pilot so you can see the results for yourself with zero risk.";
+    if (q.includes('contact') || q.includes('book') || q.includes('call') || q.includes('meet') || q.includes('demo') || q.includes('start')) {
+      return "You can book a free discovery call using the 'Book a Discovery Call' button, or fill out the inquiry form on our site and we'll get back to you.";
     }
 
-    // Languages
-    if (q.includes('language') || q.includes('multilingual')) {
-      return "Our AI agents are multilingual and can speak to your customers in their preferred language!";
+    // Free / Trial
+    if (q.includes('free') || q.includes('trial') || q.includes('pilot')) {
+      return "Every engagement starts with a free discovery call. We learn about your business first before recommending anything — no commitment required.";
     }
 
-    // Support
+    // Support / Help
     if (q.includes('support') || q.includes('help')) {
-      return "For direct support, please email us at hello@dreambsolutions.com.";
+      return "For direct support, reach us at hello@dreambsolutions.com — we're always around.";
     }
 
-    // Default Fallback
-    return "That's a great question! For detailed information or specific queries, please book a free call with us or use the Contact form so we can discuss it thoroughly.";
+    // Digital transformation / legacy / modernize
+    if (q.includes('legacy') || q.includes('modernize') || q.includes('digital') || q.includes('transform') || q.includes('cloud')) {
+      return "That's exactly what we do. We help businesses replace outdated, manual processes with modern cloud-ready technology — from custom systems to full digital transformation.";
+    }
+
+    // Default fallback
+    return "Great question! The best next step is to book a free discovery call or send us an inquiry — we'd love to learn about your business and figure out how we can help.";
   };
 
   return (

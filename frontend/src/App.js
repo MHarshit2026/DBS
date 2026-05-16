@@ -5,16 +5,20 @@ import { Button } from "./components/ui/button";
 import { Card } from "./components/ui/card";
 import { Input } from "./components/ui/input";
 import { Textarea } from "./components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./components/ui/select";
 import { Toaster, toast } from "sonner";
 import {
-  Phone,
   Calendar,
   Loader2,
   MessageSquare,
   Clock,
   Globe,
-  PhoneCall,
   Scissors,
   Stethoscope,
   Home as HomeIcon,
@@ -37,21 +41,27 @@ import {
   Zap,
   Users,
   Shield,
-  Rocket,
-  Languages } from
-"lucide-react";
+  Languages,
+  Settings,
+  Cpu,
+  Smartphone,
+} from "lucide-react";
 import { Chatbot } from "./components/Chatbot";
 
-// ============================================================
-// CONFIGURATION — Replace these with your own credentials
-// ============================================================
 const EMAILJS_SERVICE_ID = "service_0y3aflo";
 const EMAILJS_TEMPLATE_ID = "template_rmqnuio";
 const EMAILJS_PUBLIC_KEY = "leispS6sWeuD-JK-A";
 const CALENDLY_URL = "https://calendly.com/mharshitaripaka2026/new-meeting";
-// ============================================================
 
 function App() {
+  const websiteBullets = [
+    "Business websites powered by AI",
+    "Landing pages built to convert",
+    "Booking and appointment platforms",
+    "E-commerce and service storefronts",
+    "Client portals and dashboards",
+  ];
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -59,11 +69,10 @@ function App() {
     businessName: "",
     country: "",
     service: "",
-    message: ""
+    message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Scroll-reveal: IntersectionObserver adds .in-view to .animate-reveal elements
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -76,11 +85,9 @@ function App() {
       },
       { threshold: 0.12 }
     );
-
     document.querySelectorAll(".animate-reveal").forEach((el) => {
       observer.observe(el);
     });
-
     return () => observer.disconnect();
   }, []);
 
@@ -95,7 +102,6 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
     const templateParams = {
       from_name: formData.name,
       from_email: formData.email,
@@ -105,24 +111,10 @@ function App() {
       service: formData.service,
       message: formData.message,
     };
-
     try {
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        templateParams,
-        EMAILJS_PUBLIC_KEY
-      );
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams, EMAILJS_PUBLIC_KEY);
       toast.success("Thank you! Your inquiry has been submitted successfully.");
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        businessName: "",
-        country: "",
-        service: "",
-        message: ""
-      });
+      setFormData({ name: "", email: "", phone: "", businessName: "", country: "", service: "", message: "" });
     } catch (error) {
       console.error("EmailJS error:", error);
       toast.error("Something went wrong. Please try again or email us directly at hello@dreambsolutions.com");
@@ -131,128 +123,83 @@ function App() {
     }
   };
 
-  const services = [
-  {
-    title: "AI Voice Agents (Inbound)",
-    description: "Answer every incoming call instantly with AI-powered voice agents that sound human.",
-    icon: PhoneCall
-  },
-  {
-    title: "AI Voice Agents (Outbound)",
-    description: "Automate follow-ups, confirmations, and outreach campaigns with intelligent voice agents.",
-    icon: Phone
-  },
-  {
-    title: "Missed Call Recovery",
-    description: "Never lose a lead again. Automatically call back missed calls within seconds.",
-    icon: Clock
-  },
-  {
-    title: "WhatsApp & SMS Follow-Up",
-    description: "Engage customers on their preferred channels with automated messaging.",
-    icon: MessageSquare
-  },
-  {
-    title: "AI Chatbots",
-    description: "Deploy intelligent chatbots on your website to capture and qualify leads 24/7.",
-    icon: Users
-  },
-  {
-    title: "AI-Powered Websites",
-    description: "Get a conversion-optimized website built with AI technology and smart integrations.",
-    icon: Globe
-  }];
-
   const industries = [
-  { name: "Salons & Spas", icon: Scissors },
-  { name: "Clinics", icon: Stethoscope },
-  { name: "Real Estate", icon: HomeIcon },
-  { name: "Dental", icon: HeartPulse },
-  { name: "Gyms & Fitness", icon: Dumbbell },
-  { name: "Coaching", icon: GraduationCap },
-  { name: "Home Services", icon: Wrench },
-  { name: "Auto Repair", icon: Car },
-  { name: "Restaurants", icon: UtensilsCrossed },
-  { name: "Law Firms", icon: Scale },
-  { name: "Consulting", icon: Briefcase },
-  { name: "Hotels", icon: Hotel },
-  { name: "E-commerce", icon: ShoppingCart },
-  { name: "Logistics", icon: Truck },
-  { name: "Financial Services", icon: DollarSign },
-  { name: "Pet Services", icon: PawPrint },
-  { name: "Photography", icon: Camera },
-  { name: "Education", icon: BookOpen }];
+    { name: "Salons & Spas", icon: Scissors },
+    { name: "Clinics", icon: Stethoscope },
+    { name: "Real Estate", icon: HomeIcon },
+    { name: "Dental", icon: HeartPulse },
+    { name: "Gyms & Fitness", icon: Dumbbell },
+    { name: "Coaching", icon: GraduationCap },
+    { name: "Home Services", icon: Wrench },
+    { name: "Auto Repair", icon: Car },
+    { name: "Restaurants", icon: UtensilsCrossed },
+    { name: "Law Firms", icon: Scale },
+    { name: "Consulting", icon: Briefcase },
+    { name: "Hotels", icon: Hotel },
+    { name: "E-commerce", icon: ShoppingCart },
+    { name: "Logistics", icon: Truck },
+    { name: "Financial Services", icon: DollarSign },
+    { name: "Pet Services", icon: PawPrint },
+    { name: "Photography", icon: Camera },
+    { name: "Education", icon: BookOpen },
+  ];
 
   const howItWorks = [
-  {
-    step: "01",
-    title: "Tell us about your business",
-    description: "Share your industry, goals, and how you want your AI agent to help."
-  },
-  {
-    step: "02",
-    title: "We build your AI agent",
-    description: "Our team customizes your voice agent with your brand voice and business rules."
-  },
-  {
-    step: "03",
-    title: "Go live in days",
-    description: "Your AI receptionist is trained, tested, and ready to handle calls."
-  },
-  {
-    step: "04",
-    title: "Get leads daily",
-    description: "Watch your calendar fill up while you focus on delivering great service."
-  }];
-
-  const pricingPlans = [
-  {
-    name: "Starter",
-    setup: "$4,000",
-    price: "$497",
-    period: "/mo",
-    features: [
-    "Up to 300 calls/month",
-    "AI voice agent (inbound + outbound)",
-    "SMS follow-up",
-    "Calendar booking",
-    "Priority email support"]
-  },
-  {
-    name: "Growth",
-    setup: "$5,500",
-    price: "$697",
-    period: "/mo",
-    features: [
-    "Up to 600 calls/month",
-    "Advanced AI voice agent",
-    "WhatsApp + SMS",
-    "Missed call recovery",
-    "Custom workflows",
-    "Priority support"],
-    popular: true
-  },
-  {
-    name: "Enterprise",
-    setup: "Custom",
-    price: "Custom",
-    period: "",
-    features: [
-    "Unlimited calls",
-    "Multi-location support",
-    "Dedicated success manager",
-    "Custom integrations",
-    "White-label options",
-    "24/7 priority support"]
-  }];
+    {
+      step: "01",
+      title: "Discovery",
+      description: "We learn how your business works today — what's manual, what's broken, and what's holding you back.",
+    },
+    {
+      step: "02",
+      title: "Design",
+      description: "We architect a solution that solves the real problem, not just the surface one.",
+    },
+    {
+      step: "03",
+      title: "Build",
+      description: "We develop, test, and iterate until it works exactly the way your team needs it to.",
+    },
+    {
+      step: "04",
+      title: "Deploy & Support",
+      description: "We go live with you and stay available long after launch.",
+    },
+  ];
 
   const whyDreamB = [
-  { icon: Shield, text: "No lock-in contracts" },
-  { icon: Zap, text: "Free 14-day pilot" },
-  { icon: Rocket, text: "Fast setup (under 7 days)" },
-  { icon: Users, text: "Human fallback available" },
-  { icon: Languages, text: "Multilingual support" },
-  { icon: Globe, text: "Global reach & availability" }];
+    { icon: Settings, text: "Built around your workflow — never generic" },
+    { icon: Globe, text: "Cloud-ready from day one" },
+    { icon: Zap, text: "Fast delivery without cutting corners" },
+    { icon: Users, text: "End-to-end — design, build, and deploy" },
+    { icon: Shield, text: "No lock-in contracts or hidden fees" },
+    { icon: Languages, text: "Global reach, local understanding" },
+  ];
+
+  const mgmtBullets = [
+    "Learning & training platforms",
+    "Property management systems",
+    "HR & employee management",
+    "Inventory & supply chain systems",
+    "Operations dashboards",
+    "CRM & business process platforms",
+  ];
+
+  const aiAutomationBullets = [
+    "Conversational AI — voice agents, chatbots, WhatsApp & SMS",
+    "Lead capture, qualification, and follow-up",
+    "Document processing and data extraction",
+    "Intelligent scheduling and booking",
+    "Workflow triggers, routing, and notifications",
+  ];
+
+  const mobileBullets = [
+    "Customer-facing apps (iOS & Android)",
+    "Internal staff and field team apps",
+    "Real-time dashboards and reporting",
+    "Push notifications, offline support, and integrations",
+    "Cross-platform performance, modern design",
+  ];
 
   return (
     <div className="App">
@@ -267,38 +214,38 @@ function App() {
           </div>
           <nav className="nav">
             <a href="#services">Services</a>
-            <a href="#pricing">Pricing</a>
+            <a href="#how-we-work">How We Work</a>
             <a href="#inquiry-form">Contact</a>
           </nav>
         </div>
       </header>
 
-      {/* ── Hero — bottom-aligned, stacked type ── */}
+      {/* ── Hero ── */}
       <section className="hero-section">
         <div className="container">
           <h1 className="hero-title">
             <div className="hero-title-wrapper">
-              <span className="hero-title-line">Never Miss</span>
+              <span className="hero-title-line">Technology</span>
             </div>
             <div className="hero-title-wrapper">
-              <span className="hero-title-line line-2">A Customer</span>
+              <span className="hero-title-line line-2">Your Business</span>
             </div>
             <div className="hero-title-wrapper">
-              <span className="hero-title-line line-3">Again.</span>
+              <span className="hero-title-line line-3">Runs On.</span>
             </div>
           </h1>
           <div className="hero-meta">
             <p className="hero-subtitle">
-              AI voice agents that answer calls 24/7, book appointments, and capture leads—so you can focus on growing your business.
+              AI automation, modern websites, and mobile apps — built specifically for your business.
             </p>
             <div className="hero-buttons">
-              <Button size="lg" className="btn-primary" onClick={scrollToBookCall}>
-                <Calendar className="btn-icon" />
-                Book a Call
-              </Button>
-              <Button onClick={scrollToInquiry} size="lg" variant="outline" className="btn-secondary">
+              <Button size="lg" className="btn-primary" onClick={scrollToInquiry}>
                 <MessageSquare className="btn-icon" />
-                Send Inquiry
+                Start a Project
+              </Button>
+              <Button onClick={scrollToBookCall} size="lg" variant="outline" className="btn-secondary">
+                <Calendar className="btn-icon" />
+                Book a Discovery Call
               </Button>
             </div>
           </div>
@@ -310,14 +257,16 @@ function App() {
         <div className="container problem-container">
           <div className="problem-label-col">
             <span className="section-label animate-reveal">The Problem</span>
-            <h2 className="section-title animate-reveal delay-1">Your calls are going unanswered.</h2>
+            <h2 className="section-title animate-reveal delay-1">
+              Most businesses are still running on yesterday's tools.
+            </h2>
           </div>
           <div className="problem-text-col">
             <p className="problem-text animate-reveal">
-              Every missed call is a missed customer. Studies show that <strong>80% of callers won't leave a voicemail</strong>, and <strong>67% won't call back</strong>. If you're busy with a client, closed for the day, or just can't pick up—those leads go straight to your competitor.
+              Spreadsheets, WhatsApp groups, paper records, disconnected software — these aren't just inefficient, they're holding your business back. Every manual process costs time. Every missed touchpoint costs a customer. Every outdated system is a barrier to growth.
             </p>
             <p className="problem-text animate-reveal delay-1">
-              Traditional receptionists cost thousands per month, take sick days, and can only handle one call at a time. Your business deserves better.
+              The businesses winning right now have one thing in common: they've replaced guesswork and manual effort with smart technology built around how they actually work. The question isn't whether to modernize — it's how long you can afford to wait.
             </p>
           </div>
         </div>
@@ -328,15 +277,17 @@ function App() {
         <div className="container">
           <div className="section-header-center">
             <span className="section-label animate-reveal">The Solution</span>
-            <h2 className="section-title animate-reveal delay-1">Always on. Never late.</h2>
-            <p className="section-subtitle animate-reveal delay-2">Your AI Receptionist works around the clock so you never lose another lead.</p>
+            <h2 className="section-title animate-reveal delay-1">Built for the way your business works.</h2>
+            <p className="section-subtitle animate-reveal delay-2">
+              We don't sell software. We build the right solution for your specific challenge — and we see it through from day one to long after launch.
+            </p>
           </div>
           <div className="solution-grid">
             {[
-              { icon: CheckCircle2, title: "24/7 Availability", text: "Answer calls anytime, even at 3 AM or on holidays." },
-              { icon: CheckCircle2, title: "Zero Salaries", text: "No hiring, training, or payroll. Just results." },
-              { icon: CheckCircle2, title: "Instant Callback", text: "Missed calls get returned in under 60 seconds." },
-              { icon: CheckCircle2, title: "Multilingual", text: "Speak to customers in their preferred language." },
+              { icon: CheckCircle2, title: "Automate the Repetitive", text: "Let AI handle the tasks that drain your team's time and attention." },
+              { icon: CheckCircle2, title: "Build What Fits You", text: "Custom systems and apps designed around your workflow — not generic software you have to work around." },
+              { icon: CheckCircle2, title: "Move to the Cloud", text: "Scalable, secure, and accessible from anywhere in the world." },
+              { icon: CheckCircle2, title: "Grow Without Limits", text: "Technology that scales with your business, not against it." },
             ].map((item, i) => {
               const Icon = item.icon;
               return (
@@ -357,19 +308,57 @@ function App() {
           <div className="section-header-center">
             <span className="section-label animate-reveal">What We Build</span>
             <h2 className="section-title animate-reveal delay-1">Our Services</h2>
-            <p className="section-subtitle animate-reveal delay-2">Every tool you need to automate your front desk and never miss a lead.</p>
+            <p className="section-subtitle animate-reveal delay-2">
+              Three offerings. One goal — technology that works as hard as your business does.
+            </p>
           </div>
+
           <div className="services-grid">
-            {services.map((service, index) => {
-              const Icon = service.icon;
-              return (
-                <Card key={index} className="service-card">
-                  <Icon className="service-icon" />
-                  <h3 className="service-title">{service.title}</h3>
-                  <p className="service-description">{service.description}</p>
-                </Card>
-              );
-            })}
+            <Card className="service-card animate-reveal delay-1">
+              <Cpu className="service-icon" />
+              <h3 className="service-title">AI Automation</h3>
+              <p className="service-description">
+                We identify where your business spends time on repetitive, manual work — and automate it using AI. Intelligent automation that runs 24/7 without adding headcount.
+              </p>
+              <ul className="service-list">
+                {aiAutomationBullets.map((b, i) => (
+                  <li key={i} className="service-list-item">
+                    <CheckCircle2 className="service-list-icon" />
+                    {b}
+                  </li>
+                ))}
+              </ul>
+            </Card>
+            <Card className="service-card animate-reveal delay-2">
+              <Globe className="service-icon" />
+              <h3 className="service-title">Websites</h3>
+              <p className="service-description">
+                We design and build websites that work as hard as you do — conversion-focused, AI-integrated, and built for the way your business actually operates online.
+              </p>
+              <ul className="service-list">
+                {websiteBullets.map((b, i) => (
+                  <li key={i} className="service-list-item">
+                    <CheckCircle2 className="service-list-icon" />
+                    {b}
+                  </li>
+                ))}
+              </ul>
+            </Card>
+            <Card className="service-card animate-reveal delay-3">
+              <Smartphone className="service-icon" />
+              <h3 className="service-title">Mobile Apps</h3>
+              <p className="service-description">
+                We build mobile applications that put your business in your customers' pockets — and give your team the tools they need on the go. Native performance, modern design.
+              </p>
+              <ul className="service-list">
+                {mobileBullets.map((b, i) => (
+                  <li key={i} className="service-list-item">
+                    <CheckCircle2 className="service-list-icon" />
+                    {b}
+                  </li>
+                ))}
+              </ul>
+            </Card>
           </div>
         </div>
       </section>
@@ -397,13 +386,15 @@ function App() {
         </div>
       </section>
 
-      {/* ── How It Works ── */}
-      <section className="section how-it-works-section">
+      {/* ── How We Work ── */}
+      <section id="how-we-work" className="section how-it-works-section">
         <div className="container">
           <div className="section-header-center">
             <span className="section-label animate-reveal">The Process</span>
-            <h2 className="section-title animate-reveal delay-1">How It Works</h2>
-            <p className="section-subtitle animate-reveal delay-2">From kickoff to live in under a week.</p>
+            <h2 className="section-title animate-reveal delay-1">From first conversation to final launch.</h2>
+            <p className="section-subtitle animate-reveal delay-2">
+              We keep things clear, fast, and collaborative at every step.
+            </p>
           </div>
           <div className="steps-grid">
             {howItWorks.map((item, index) => (
@@ -417,56 +408,15 @@ function App() {
         </div>
       </section>
 
-      {/* ── Pricing ── */}
-      <section id="pricing" className="section pricing-section">
-        <div className="container">
-          <div className="section-header-center">
-            <span className="section-label animate-reveal">Investment</span>
-            <h2 className="section-title animate-reveal delay-1">Pricing</h2>
-          </div>
-          <div className="pricing-notice animate-reveal delay-2">
-            <span className="notice-icon">⚠️</span>
-            <span className="notice-text">Prices vary region to region and country to country.</span>
-          </div>
-          <div className="pricing-grid">
-            {pricingPlans.map((plan, index) => (
-              <Card key={index} className={`pricing-card ${plan.popular ? "popular" : ""} animate-reveal delay-${index + 1}`}>
-                {plan.popular && <div className="popular-badge">Recommended</div>}
-                <h3 className="pricing-plan-name">{plan.name}</h3>
-                <div className="pricing-setup">
-                  <span className="setup-label">Setup:</span>
-                  <span className="setup-price">{plan.setup}</span>
-                </div>
-                <div className="pricing-amount">
-                  <span className="price">{plan.price}</span>
-                  <span className="period">{plan.period}</span>
-                </div>
-                <ul className="pricing-features">
-                  {plan.features.map((feature, idx) => (
-                    <li key={idx} className="pricing-feature">
-                      <CheckCircle2 className="feature-check" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </Card>
-            ))}
-          </div>
-          <div className="pricing-cta">
-            <Button onClick={scrollToInquiry} size="lg" className="btn-primary">
-              Get a Custom Quote
-            </Button>
-          </div>
-        </div>
-      </section>
-
       {/* ── Why DreamB ── */}
       <section className="section why-section">
         <div className="container">
           <div className="section-header-center">
             <span className="section-label animate-reveal">Why Us</span>
-            <h2 className="section-title animate-reveal delay-1">Why DreamB Solutions</h2>
-            <p className="section-subtitle animate-reveal delay-2">Built for businesses that refuse to leave growth on the table.</p>
+            <h2 className="section-title animate-reveal delay-1">Built for businesses that refuse to settle.</h2>
+            <p className="section-subtitle animate-reveal delay-2">
+              We don't do off-the-shelf. Every solution we deliver is designed for the way you work.
+            </p>
           </div>
           <div className="why-grid">
             {whyDreamB.map((item, index) => {
@@ -482,13 +432,15 @@ function App() {
         </div>
       </section>
 
-      {/* ── Book A Call ── */}
+      {/* ── Let's Talk ── */}
       <section id="book-call" className="section book-call-section">
         <div className="container">
           <div className="section-header-center">
             <span className="section-label animate-reveal">Let's Talk</span>
-            <h2 className="section-title animate-reveal delay-1">Schedule Your Consultation</h2>
-            <p className="section-subtitle animate-reveal delay-2">Pick a time below and let's discuss how AI can grow your business.</p>
+            <h2 className="section-title animate-reveal delay-1">Every business is different. So is every solution we build.</h2>
+            <p className="section-subtitle animate-reveal delay-2">
+              There's no price list here — because your challenge deserves a real conversation, not a package. Tell us what you're working on and we'll come back with a clear plan.
+            </p>
           </div>
           <div className="book-details animate-reveal delay-3">
             <div className="book-detail-item">
@@ -497,7 +449,7 @@ function App() {
             </div>
             <div className="book-detail-item">
               <Calendar size={20} strokeWidth={1.5} />
-              <span>Free consultation</span>
+              <span>Free discovery call</span>
             </div>
             <div className="book-detail-item">
               <Globe size={20} strokeWidth={1.5} />
@@ -511,8 +463,11 @@ function App() {
               rel="noopener noreferrer"
               className="btn-primary book-cal-link"
             >
-              Pick a Time
+              Book a Discovery Call
             </a>
+            <button className="btn-secondary book-inquiry-link" onClick={scrollToInquiry}>
+              Send an Inquiry
+            </button>
           </div>
         </div>
       </section>
@@ -533,7 +488,8 @@ function App() {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
-                  className="form-input" />
+                  className="form-input"
+                />
               </div>
               <div className="form-group">
                 <Input
@@ -542,7 +498,8 @@ function App() {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
-                  className="form-input" />
+                  className="form-input"
+                />
               </div>
             </div>
             <div className="form-row">
@@ -553,7 +510,8 @@ function App() {
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   required
-                  className="form-input" />
+                  className="form-input"
+                />
               </div>
               <div className="form-group">
                 <Input
@@ -562,7 +520,8 @@ function App() {
                   value={formData.businessName}
                   onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
                   required
-                  className="form-input" />
+                  className="form-input"
+                />
               </div>
             </div>
             <div className="form-row">
@@ -573,18 +532,19 @@ function App() {
                   value={formData.country}
                   onChange={(e) => setFormData({ ...formData, country: e.target.value })}
                   required
-                  className="form-input" />
+                  className="form-input"
+                />
               </div>
               <div className="form-group">
                 <Select value={formData.service} onValueChange={(value) => setFormData({ ...formData, service: value })} required>
                   <SelectTrigger className="form-select">
-                    <SelectValue placeholder="Select Service" />
+                    <SelectValue placeholder="What are you looking for?" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="voice-agent">Voice Agent</SelectItem>
-                    <SelectItem value="chatbot">Chatbot</SelectItem>
+                    <SelectItem value="ai-automation">AI Automation</SelectItem>
                     <SelectItem value="website">Website</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
+                    <SelectItem value="mobile-app">Mobile App</SelectItem>
+                    <SelectItem value="not-sure">Not sure yet — let's talk</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -596,7 +556,8 @@ function App() {
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 required
                 className="form-textarea"
-                rows={5} />
+                rows={5}
+              />
             </div>
             <Button type="submit" size="lg" className="btn-primary form-submit" disabled={isSubmitting}>
               {isSubmitting ? (
@@ -619,7 +580,9 @@ function App() {
             <div className="logo-main">DreamB Solutions</div>
           </div>
           <div className="footer-info">
-            <a href="mailto:hello@dreambsolutions.com" className="contact-method-link">hello@dreambsolutions.com</a>
+            <a href="mailto:hello@dreambsolutions.com" className="contact-method-link">
+              hello@dreambsolutions.com
+            </a>
             <p className="footer-copyright">© 2026 DreamB Solutions — All rights reserved</p>
           </div>
         </div>
