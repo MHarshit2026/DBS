@@ -142,7 +142,7 @@ html {
 
 .hero-title-line {
   display: block;
-  font-size: clamp(64px, 10.5vw, 148px);
+  font-size: clamp(38px, 10.5vw, 148px);
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: -0.035em;
